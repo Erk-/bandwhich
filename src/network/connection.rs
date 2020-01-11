@@ -14,7 +14,7 @@ impl Protocol {
     // Currently, linux implementation doesn't use this function.
     // Without this #[cfg] clippy complains about dead code, and CI refuses
     // to pass.
-    #[cfg(target_os = "macos")]
+    #[cfg(all(target_family = "unix", not(target_os = "linux")))]
     pub fn from_str(string: &str) -> Option<Self> {
         match string {
             "TCP" => Some(Protocol::Tcp),

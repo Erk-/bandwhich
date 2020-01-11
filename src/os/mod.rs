@@ -1,10 +1,10 @@
 #[cfg(target_os = "linux")]
 pub(self) mod linux;
 
-#[cfg(target_os = "macos")]
-pub(self) mod macos;
+#[cfg(all(target_family = "unix", not(target_os = "linux")))]
+pub(self) mod bsd;
 
-#[cfg(target_os = "macos")]
+#[cfg(all(target_family = "unix", not(target_os = "linux")))]
 mod lsof_utils;
 
 mod shared;

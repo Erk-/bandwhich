@@ -13,8 +13,8 @@ use signal_hook::iterator::Signals;
 
 #[cfg(target_os = "linux")]
 use crate::os::linux::get_open_sockets;
-#[cfg(target_os = "macos")]
-use crate::os::macos::get_open_sockets;
+#[cfg(all(target_family = "unix", not(target_os = "linux")))]
+use crate::os::bsd::get_open_sockets;
 use crate::{network::dns, OsInputOutput};
 
 pub type OnSigWinch = dyn Fn(Box<dyn Fn()>) + Send;
@@ -143,7 +143,7 @@ pub fn get_input(
 }
 
 #[inline]
-#[cfg(target_os = "macos")]
+#[cfg(all(target_family = "unix", not(target_os = "linux")))]
 fn eperm_message() -> &'static str {
     "Insufficient permissions to listen on network interface(s). Try running with sudo."
 }
